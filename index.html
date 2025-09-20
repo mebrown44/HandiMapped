@@ -60,7 +60,7 @@
     </nav>
   <header>
     <img>
-      <img src="https://i.postimg.cc/MZMpcqs3/handimapped-logo-test.png" alt="HandiMapped Logo">
+      <img src="https://i.postimg.cc/MZMpcqs3/handimapped-logo-test.png" width="300" height="63" alt="HandiMapped Logo">
     </img>
   </header>
   <div id="map"></div>
@@ -105,7 +105,7 @@
     
     async function loadBuildings() {
       try {
-        const res = await fetch('https://handimapped.com/conn?action=GETBUILD');
+        const res = await fetch('https://handimapped.com/api/conn?action=GETBUILD');
       if (!res.ok) {
         console.error('HTTP error', res.status);
         return;

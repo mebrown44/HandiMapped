@@ -44,3 +44,24 @@ button {
 button:hover {
     background-color: #ee7674;
 }
+.navbar {
+      display: flex;
+      background: transparent;
+      justify-content: flex-end;
+      border-radius: 30px;
+      padding: 10px 20px;
+      margin: 0 auto;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+}
+.navbar-content {
+    display: flex;
+    gap: 20px;
+    background: #feefdd;
+    padding: 10px 20px;
+    border-radius: 30px;
+    align-items: center;
+}

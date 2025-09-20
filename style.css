@@ -1,5 +1,6 @@
 body {
-      font-family: Arial, sans-serif;
+      font-family: Cambria;
+      background-color: #6c9a8b;
       margin: 0;
       padding: 0;
     }
@@ -31,8 +32,10 @@ header {
 
 button {
     background-color: #6c9a8b;
-    color: 1e140b;
+    color: #1e140b;
     border: none;
+    font-family: Cambria;
+    font-weight: bold;
     padding: 10px 20px;
     border-radius: 20px;
     cursor: pointer;

@@ -21,12 +21,12 @@ header {
 
 .item a {
     text-decoration: none;
-    color: 1e140b;
+    color: #1e140b;
     font-weight: bold;
 }
 
 .item a:hover {
-    color: #2258c3;
+    color: #6c9a8b;
 }
 
 button {

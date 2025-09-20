@@ -102,9 +102,10 @@
     });
     
     async function loadBuildings() {
-      const res = await fetch('/api/conn?action=GETBUILD');
+      const res = await fetch('/conn?action=GETBUILD');
       const buildings = await res.json();
 
+      console.log("Hello World");
       buildings.forEach(b => {
         L.marker([b.LAT, b.LNG], { icon: pawIcon })
           .addTo(map)

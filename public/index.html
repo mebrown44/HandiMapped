@@ -60,9 +60,7 @@
       </div>
     </nav>
   <header>
-    <img>
-      <img src="https://i.postimg.cc/MZMpcqs3/handimapped-logo-test.png" width="300" height="63" alt="HandiMapped Logo">
-    </img>
+    <img src="https://i.postimg.cc/MZMpcqs3/handimapped-logo-test.png" width="300" height="63" alt="HandiMapped Logo"/>
   </header>
   <div id="map"></div>
   <input type="text" id="searchBar" placeholder="Search buildings...">
@@ -106,22 +104,24 @@
     
     async function loadBuildings() {
       try {
-      const res = await fetch('https://handimapped.com/api/conn?action=GETBUILD');
-      if (!res.ok) {
-        console.error('HTTP error', res.status);
-        return;
-      }
-      const buildings = await res.json();
-      console.log("Buildings:", buildings);
+        // Works on both localhost and Vercel
+        const res = await fetch('/api/conn?method=GET');
+        if (!res.ok) {
+          console.error('HTTP error', res.status);
+          return;
+        }
 
-      buildings.forEach(b => {
-        L.marker([b.LAT, b.LNG], { icon: pawIcon })
-          .addTo(map)
-          .bindPopup(`<b>${b.NAME}</b><br>⭐ ${b.RATING}/5`);
-      });
-    } catch (err) {
-      console.error('Fetch failed', err);
-    }
+        const buildings = await res.json();
+        console.log("Buildings:", buildings);
+
+        buildings.forEach(b => {
+          L.marker([b.LAT, b.LNG], { icon: pawIcon })
+            .addTo(map)
+            .bindPopup(`<b>${b.NAME}</b><br>⭐ ${b.RATING}/5`);
+        });
+      } catch (err) {
+        console.error('Fetch failed', err);
+      }
   }
   
   </script>

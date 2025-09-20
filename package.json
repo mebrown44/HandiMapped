@@ -1,0 +1,23 @@
+{
+  "name": "handimapped",
+  "version": "1.0.0",
+  "description": "SteelHacks XII (2025) Project\r - Index\r - Report Page\r     - New Building\r - About Us\r - Building Profile Page\r - Nav",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mebrown44/HandiMapped.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mebrown44/HandiMapped/issues"
+  },
+  "homepage": "https://github.com/mebrown44/HandiMapped#readme",
+  "dependencies": {
+    "mysql2": "^3.15.0"
+  }
+}

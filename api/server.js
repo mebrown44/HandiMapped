@@ -1,19 +1,24 @@
 import express from 'express';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import handler from './conn.js';
+import 'dotenv/config';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+// Fix __dirname in ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Serve static HTML/JS files
-app.use(express.static(path.join(process.cwd(), 'public')));
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// API endpoint for DB interactions
+// Serve static HTML/JS files from public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+// All requests to /api/conn go to your conn.js
 app.all('/api/conn', handler);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

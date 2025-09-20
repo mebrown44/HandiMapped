@@ -11,6 +11,7 @@
 //}
 
 import mysql from 'mysql2/promise';
+import 'dotenv/config';
 
 let pool;
 
@@ -29,3 +30,14 @@ export function getPool() {
   }
   return pool;
 }
+
+// Quick test
+(async () => {
+  try {
+    const pool = getPool();
+    const [rows] = await pool.query('SELECT 1 + 1 AS result');
+    console.log('DB connected, test query result:', rows);
+  } catch (err) {
+    console.error('DB connection failed:', err.message);
+  }
+})();

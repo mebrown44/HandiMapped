@@ -5,6 +5,4 @@ SteelHacks XII (2025) Project
     - New Building
 - About Us
 - Building Profile Page
-- Nav?
-- Data?
-- Log In?
+- Nav

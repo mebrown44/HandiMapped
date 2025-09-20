@@ -4,9 +4,8 @@ body {
       padding: 0;
     }
 header {
-    background: #004700;
-    color: white;
-    padding: 40px;
+    background: #feefdd;
+    padding: 60px;
     text-align: center;
 }
 .menu {
@@ -22,7 +21,7 @@ header {
 
 .item a {
     text-decoration: none;
-    color: white;
+    color: 1e140b;
     font-weight: bold;
 }
 
@@ -31,8 +30,8 @@ header {
 }
 
 button {
-    background-color: #2258c3;
-    color: white;
+    background-color: #6c9a8b;
+    color: 1e140b;
     border: none;
     padding: 10px 20px;
     border-radius: 20px;
@@ -40,5 +39,5 @@ button {
 }
 
 button:hover {
-    background-color: #fd2df3;
+    background-color: #ee7674;
 }

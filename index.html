@@ -102,16 +102,25 @@
     });
     
     async function loadBuildings() {
-      const res = await fetch('/conn?action=GETBUILD');
-      const buildings = await res.json();
+      try {
+        const res = await fetch('https://handimapped.com/conn?action=GETBUILD');
+      if (!res.ok) {
+        console.error('HTTP error', res.status);
+        return;
+      }
+      //const buildings = await res.json();
+      console.log("Buildings:", buildings);
 
-      console.log("Hello World");
       buildings.forEach(b => {
         L.marker([b.LAT, b.LNG], { icon: pawIcon })
           .addTo(map)
           .bindPopup(`<b>${b.NAME}</b><br>⭐ ${b.RATING}/5`);
       });
+    } catch (err) {
+      console.error('Fetch failed', err);
     }
+  }
+  
   </script>
 </body>
 </html>

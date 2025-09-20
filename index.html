@@ -14,7 +14,7 @@
     header {
       background: #004700;
       color: white;
-      padding: 10px;
+      padding: 40px;
       text-align: center;
     }
     #map {
@@ -33,9 +33,74 @@
     #buildingList {
       margin: 20px;
     }
+        .navbar {
+        display: flex;
+        background: transparent;
+        justify-content: flex-end;
+        border-radius: 30px;
+        padding: 10px 20px;
+        margin: 0 auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+    }
+    .navbar-content {
+    display: flex;
+    gap: 20px;
+    background: #004700;
+    padding: 10px 20px;
+    border-radius: 30px;
+    align-items: center;
+    }
+
+    .menu {
+        display: flex;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .item {
+        margin: 0 15px;
+      }
+
+      .item a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+      }
+
+      .item a:hover {
+        color: #2258c3;
+      }
+
+      button {
+        background-color: #2258c3;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #fd2df3;
+      }
   </style>
 </head>
 <body>
+  <nav class="navbar">
+      <div class="navbar-content">
+      <ul class="menu">
+        <li class="item"><a href="#">Home</a></li>
+        <li class="item"><a href="#">Report</a></li>
+        <li class="item"><a href="#">About Us</a></li>
+      </ul>
+      <button type="submit">Search</button>
+      </div>
+    </nav>
   <header>
     <h1>HandiMapped</h1>
   </header>\>

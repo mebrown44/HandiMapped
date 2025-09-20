@@ -84,7 +84,7 @@
     async function loadBuildings() {
       try {
         // Works on both localhost and Vercel
-        const res = await fetch('https://handimapped.com/api/conn?');
+        const res = await fetch('https://handimapped.com/api/conn?action=GETBUILD');
         if (!res.ok) {
           console.error('HTTP error', res.status);
           return;
@@ -94,9 +94,13 @@
         console.log("Buildings:", buildings);
 
         buildings.forEach(b => {
-          L.marker([b.LAT, b.LNG], { icon: pawIcon })
+          const lat = parseFloat(b.LAT);
+          const lng = parseFloat(b.LNG);
+          const rating = parseFloat(b.RATING).toFixed(1);
+
+          L.marker([lat, lng], { icon: pawIcon })
             .addTo(map)
-            .bindPopup(`<b>${b.NAME}</b><br>⭐ ${b.RATING}/5`);
+            .bindPopup(`<b>${b.NAME}</b><br>⭐ ${rating}/5`);
         });
       } catch (err) {
         console.error('Fetch failed', err);

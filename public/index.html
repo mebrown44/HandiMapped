@@ -84,7 +84,7 @@
     async function loadBuildings() {
       try {
         // Works on both localhost and Vercel
-        const res = await fetch('https://handi-mapped-8dikv1mz8-mebrown44s-projects.vercel.app/api/conn');
+        const res = await fetch('https://handimapped.com/api/conn?');
         if (!res.ok) {
           console.error('HTTP error', res.status);
           return;

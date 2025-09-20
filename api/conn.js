@@ -1,4 +1,4 @@
-import { getPool } from './db.js';
+import { getPool } from '../db.js';
 
 export default async function handler(req, res) {
   try {

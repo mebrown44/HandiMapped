@@ -26,7 +26,7 @@ export function getPool() {
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
-      ssl: { rejectUnauthorized: true }
+      ca: fs.readFileSync('./ca.pem', 'utf8'),
     });
   }
   return pool;

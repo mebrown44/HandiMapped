@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HandiMapped – Home</title>
+  <!--Leaflet CSS, not sure how it works-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #004700;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+    #map {
+      height: 400px;
+      margin: 20px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+    }
+    #searchBar {
+      padding: 8px;
+      margin: 20px;
+      width: 90%;
+      max-width: 400px;
+      display: block;
+    }
+    #buildingList {
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>HandiMapped</h1>
+  </header>
+  <div id="map"></div>
+  <input type="text" id="searchBar" placeholder="Search buildings...">
+  <ul id="buildingList">
+    <li>Cathedral of Learning</li>
+    <li>Information Science Building</li>
+  </ul>
+  <!--Leaflet JS has to come after CSS-->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    //create map
+    var map = L.map('map').setView([40.4442, -79.9532], 16);
+    //add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    //panther marker
+    var pawIcon = L.icon({
+      iconUrl: 'panther.png',   
+      iconSize: [30, 30],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -30]
+    });
+    //add markers, coordinates are from the oakland map in only cans
+    L.marker([40.4442, -79.9532], {icon: pawIcon}).addTo(map)
+      .bindPopup("<b>Cathedral of Learning</b><br>⭐ 3.5/5");
+    L.marker([40.4429, -79.9540], {icon: pawIcon}).addTo(map)
+      .bindPopup("<b>Information Science Building</b><br>⭐ 2/5");
+    //search filter
+    document.getElementById('searchBar').addEventListener('input', function () {
+      let filter = this.value.toLowerCase();
+      let items = document.querySelectorAll('#buildingList li');
+      items.forEach(li => {
+        //if it is included in the filter, no char after
+        li.style.display = li.textContent.toLowerCase().includes(filter) ? '' : 'none';
+      });
+    }); 
+  </script>
+</body>
+</html>

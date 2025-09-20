@@ -105,12 +105,12 @@
     
     async function loadBuildings() {
       try {
-        const res = await fetch('https://handimapped.com/api/conn?action=GETBUILD');
+      const res = await fetch('https://handimapped.com/api/conn?action=GETBUILD');
       if (!res.ok) {
         console.error('HTTP error', res.status);
         return;
       }
-      //const buildings = await res.json();
+      const buildings = await res.json();
       console.log("Buildings:", buildings);
 
       buildings.forEach(b => {

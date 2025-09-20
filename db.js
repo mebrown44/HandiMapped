@@ -1,8 +1,11 @@
-const pool = mysql.createPool({
-  host: process.env.AIVEN_HOST,
-  port: process.env.AIVEN_PORT,
-  user: process.env.AIVEN_USER,
-  password: process.env.AIVEN_PASSWORD,
-  database: process.env.AIVEN_DB,
-  ssl: { ca: process.env.AIVEN_CA_CERT.replace(/\\n/g, '\n') }
-});
+import mysql from 'mysql2/promise';
+
+export async function getConnection() {
+  return await mysql.createConnection({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+  });
+}

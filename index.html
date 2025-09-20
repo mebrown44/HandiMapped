@@ -5,18 +5,9 @@
   <title>HandiMapped – Home</title>
   <!--Leaflet CSS, not sure how it works-->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <!--I moved the style of more general elements to the style.css file-->
+  <link rel="stylesheet" href="style.css"/>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #004700;
-      color: white;
-      padding: 10px;
-      text-align: center;
-    }
     #map {
       height: 400px;
       margin: 20px;
@@ -33,12 +24,45 @@
     #buildingList {
       margin: 20px;
     }
+        .navbar {
+        display: flex;
+        background: transparent;
+        justify-content: flex-end;
+        border-radius: 30px;
+        padding: 10px 20px;
+        margin: 0 auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+    }
+    .navbar-content {
+    display: flex;
+    gap: 20px;
+    background: #004700;
+    padding: 10px 20px;
+    border-radius: 30px;
+    align-items: center;
+    }
   </style>
 </head>
 <body>
+  <nav class="navbar">
+      <div class="navbar-content">
+      <ul class="menu">
+        <li class="item"><a href="#">Home</a></li>
+        <li class="item"><a href="#">Report</a></li>
+        <li class="item"><a href="#">About Us</a></li>
+      </ul>
+      <button type="submit">Search</button>
+      </div>
+    </nav>
   <header>
-    <h1>HandiMapped</h1>
-  </header>\>
+    <img>
+      <img src="https://i.postimg.cc/MZMpcqs3/handimapped-logo-test.png" alt="HandiMapped Logo">
+    </img>
+  </header>
   <div id="map"></div>
   <input type="text" id="searchBar" placeholder="Search buildings...">
   <ul id="buildingList">
@@ -62,10 +86,13 @@
       popupAnchor: [0, -30]
     });
     //add markers, coordinates are from the oakland map in only cans
-    L.marker([40.4442, -79.9532], {icon: pawIcon}).addTo(map)
+    /*L.marker([40.4442, -79.9532], {icon: pawIcon}).addTo(map)
       .bindPopup("<b>Cathedral of Learning</b><br>⭐ 3.5/5");
     L.marker([40.4429, -79.9540], {icon: pawIcon}).addTo(map)
-      .bindPopup("<b>Information Science Building</b><br>⭐ 2/5");
+      .bindPopup("<b>Information Science Building</b><br>⭐ 2/5");*/
+
+    //Dynamic insert based on SQL
+    loadBuildings();
     //search filter
     document.getElementById('searchBar').addEventListener('input', function () {
       let filter = this.value.toLowerCase();
@@ -74,7 +101,28 @@
         //if it is included in the filter, no char after
         li.style.display = li.textContent.toLowerCase().includes(filter) ? '' : 'none';
       });
-    }); 
+    });
+    
+    async function loadBuildings() {
+      try {
+        const res = await fetch('https://handimapped.com/conn?action=GETBUILD');
+      if (!res.ok) {
+        console.error('HTTP error', res.status);
+        return;
+      }
+      //const buildings = await res.json();
+      console.log("Buildings:", buildings);
+
+      buildings.forEach(b => {
+        L.marker([b.LAT, b.LNG], { icon: pawIcon })
+          .addTo(map)
+          .bindPopup(`<b>${b.NAME}</b><br>⭐ ${b.RATING}/5`);
+      });
+    } catch (err) {
+      console.error('Fetch failed', err);
+    }
+  }
+  
   </script>
 </body>
 </html>

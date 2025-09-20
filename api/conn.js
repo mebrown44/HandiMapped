@@ -24,7 +24,7 @@ export default async function handler(req, res) {
         const { code, name, address, func, rating, fire, acc, lat, lng } = req.body;
         await conn.execute(
           'UPDATE BUILDINGS SET NAME = ?, ADDRESS = ?, FUNC = ?, RATING = ?, FIRE_DATA = ?, ACCESSIBILITY = ?, LAT = ?, LNG = ? WHERE CODE = ?',
-          [name, address, func, rating, fire, acc, code, lat, lng]
+          [name, address, func, rating, fire, acc, lat, lng, code]
         );
         res.status(200).json({ message: 'Building updated' });
       } else if (action === 'POSTBUILD') {

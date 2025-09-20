@@ -3,9 +3,11 @@ body {
       background-color: #6c9a8b;
       margin: 0;
       padding: 0;
+      color: #1e140b;
     }
 header {
     background: #feefdd;
+    color: #1e140b;
     padding: 60px;
     text-align: center;
 }
@@ -65,3 +67,11 @@ button:hover {
     border-radius: 30px;
     align-items: center;
 }
+footer {
+      text-align: center;
+      padding: 15px;
+      background: #eee;
+      margin-top: 20px;
+}
+
+

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HandiMapped – About Us</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #004700;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .mission {
+      padding: 30px;
+      text-align: center;
+      background: #f9f9f9;
+    }
+
+    .team {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .member {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .member img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #eee;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>About Us</h1>
+    <nav>
+      <a href="index.html" style="color:white; margin-right:15px;">Home</a>
+      <a href="about.html" style="color:white; margin-right:15px;">About</a>
+      <a href="report.html" style="color:white;">Report</a>
+    </nav>
+  </header>
+
+  <section class="mission">
+    <h2>Our Mission</h2>
+    <p>
+      At <b>HandiMapped</b>, our mission is to make the University of Pittsburgh’s campus
+      more accessible for everyone. We believe that accessibility is a right, not a privilege, 
+      and we created this platform to help students, faculty, and visitors share and find 
+      accessibility information about Pitt buildings.
+    </p>
+  </section>
+
+  <section class="team">
+    <!-- Member 1 -->
+    <div class="member">
+      <img src="gina.png" alt="Gina">
+      <h3>Gina Agabegi</h3>
+      <p><b>Major:</b> Information Science</p>
+      <p><b>Minor:</b> Computer Science and Business</p>
+      <p><i>Role:</i> Frontend Developer</p>
+    </div>
+
+    <!-- Member 2 -->
+    <div class="member">
+      <img src="margo.png" alt="Margo">
+      <h3>Member Two</h3>
+      <p><b>Major:</b> Information Science</p>
+      <p><b>Minor:</b> Economics</p>
+      <p><b>Certificate:</b> GIS</p>
+      <p><i>Role:</i> Backend Developer</p>
+    </div>
+
+    <!-- Member 3 -->
+    <div class="member">
+      <img src="chloe.png" alt="Chloe">
+      <h3>Member Three</h3>
+      <p><b>Major:</b> Computer Engineering</p>
+      <p><b>Minor:</b> Math</p>
+      <p><b>Certificate:</b> AI/ML</p>
+      <p><i>Role:</i> Database & Map Integration</p>
+    </div>
+
+    <!-- Member 4 -->
+    <div class="member">
+      <img src="gina.png" alt="Erika">
+      <h3>Member Four</h3>
+      <p><b>Major:</b> Digital Narrative & Interactive Design</p>
+      <p><b>Minor:</b> Sociology</p>
+      <p><b>Certificate:</b> UX/UI Design</p>
+      <p><i>Role:</i> Designer & Project Manager</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 HandiMapped Team</p>
+  </footer>
+</body>
+</html>

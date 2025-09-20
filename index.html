@@ -5,18 +5,9 @@
   <title>HandiMapped – Home</title>
   <!--Leaflet CSS, not sure how it works-->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <!--I moved the style of more general elements to the style.css file-->
+  <link rel="stylesheet" href="style.css"/>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #004700;
-      color: white;
-      padding: 40px;
-      text-align: center;
-    }
     #map {
       height: 400px;
       margin: 20px;
@@ -54,40 +45,6 @@
     border-radius: 30px;
     align-items: center;
     }
-
-    .menu {
-        display: flex;
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
-
-      .item {
-        margin: 0 15px;
-      }
-
-      .item a {
-        text-decoration: none;
-        color: white;
-        font-weight: bold;
-      }
-
-      .item a:hover {
-        color: #2258c3;
-      }
-
-      button {
-        background-color: #2258c3;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 20px;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background-color: #fd2df3;
-      }
   </style>
 </head>
 <body>
@@ -103,7 +60,7 @@
     </nav>
   <header>
     <h1>HandiMapped</h1>
-  </header>\>
+  </header>
   <div id="map"></div>
   <input type="text" id="searchBar" placeholder="Search buildings...">
   <ul id="buildingList">
@@ -127,10 +84,13 @@
       popupAnchor: [0, -30]
     });
     //add markers, coordinates are from the oakland map in only cans
-    L.marker([40.4442, -79.9532], {icon: pawIcon}).addTo(map)
+    /*L.marker([40.4442, -79.9532], {icon: pawIcon}).addTo(map)
       .bindPopup("<b>Cathedral of Learning</b><br>⭐ 3.5/5");
     L.marker([40.4429, -79.9540], {icon: pawIcon}).addTo(map)
-      .bindPopup("<b>Information Science Building</b><br>⭐ 2/5");
+      .bindPopup("<b>Information Science Building</b><br>⭐ 2/5");*/
+
+    //Dynamic insert based on SQL
+    loadBuildings();
     //search filter
     document.getElementById('searchBar').addEventListener('input', function () {
       let filter = this.value.toLowerCase();
@@ -139,7 +99,18 @@
         //if it is included in the filter, no char after
         li.style.display = li.textContent.toLowerCase().includes(filter) ? '' : 'none';
       });
-    }); 
+    });
+    
+    async function loadBuildings() {
+      const res = await fetch('/api/conn?action=GETBUILD');
+      const buildings = await res.json();
+
+      buildings.forEach(b => {
+        L.marker([b.LAT, b.LNG], { icon: pawIcon })
+          .addTo(map)
+          .bindPopup(`<b>${b.NAME}</b><br>⭐ ${b.RATING}/5`);
+      });
+    }
   </script>
 </body>
 </html>

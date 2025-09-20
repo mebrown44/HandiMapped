@@ -21,17 +21,17 @@ export default async function handler(req, res) {
     } 
     else if (req.method === 'POST') {
       if (action === 'UPDATEBUILD') {
-        const { code, name, address, func, rating, fire, acc } = req.body;
+        const { code, name, address, func, rating, fire, acc, lat, lng } = req.body;
         await conn.execute(
-          'UPDATE BUILDINGS SET NAME = ?, ADDRESS = ?, FUNC = ?, RATING = ?, FIRE_DATA = ?, ACCESSIBILITY = ? WHERE CODE = ?',
-          [name, address, func, rating, fire, acc, code]
+          'UPDATE BUILDINGS SET NAME = ?, ADDRESS = ?, FUNC = ?, RATING = ?, FIRE_DATA = ?, ACCESSIBILITY = ?, LAT = ?, LNG = ? WHERE CODE = ?',
+          [name, address, func, rating, fire, acc, code, lat, lng]
         );
         res.status(200).json({ message: 'Building updated' });
       } else if (action === 'POSTBUILD') {
-        const { name, address, func, rating, fire, acc } = req.body;
+        const { name, address, func, rating, fire, acc, lat, lng } = req.body;
         const [result] = await conn.execute(
-          'INSERT INTO BUILDINGS (NAME, ADDRESS, FUNC, RATING, FIRE_DATA, ACCESSIBILITY) VALUES (?, ?, ?, ?, ?, ?)',
-          [name, address, func, rating, fire, acc]
+          'INSERT INTO BUILDINGS (NAME, ADDRESS, FUNC, RATING, FIRE_DATA, ACCESSIBILITY, LAT, LNG) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+          [name, address, func, rating, fire, acc, lat, lng]
         );
         res.status(201).json({ message: 'Building added', id: result.insertId });
       } else if (action === 'POSTREV') {

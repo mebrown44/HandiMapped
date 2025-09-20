@@ -6,31 +6,48 @@ export default async function handler(req, res) {
   try {
     conn = await getConnection();
 
+    const { action } = req.query; // e.g., /api/conn?action=GETBUILD
+
     if (req.method === 'GET') {
-      // SELECT all rows from a table (e.g., users)
-      const [rows] = await conn.execute('SELECT * FROM users');
-      res.status(200).json(rows);
+      if (action === 'GETBUILD') {
+        const [rows] = await conn.execute('SELECT * FROM BUILDINGS');
+        res.status(200).json(rows);
+      } else if (action === 'GETREVS') {
+        const [rows] = await conn.execute('SELECT * FROM REVIEWS');
+        res.status(200).json(rows);
+      } else {
+        res.status(400).json({ error: 'Unknown action' });
+      }
     } 
     else if (req.method === 'POST') {
-      // Expect JSON body with values to insert
-      const { name, email } = req.body;
-
-      if (!name || !email) {
-        res.status(400).json({ error: 'Missing name or email' });
-        return;
+      if (action === 'UPDATEBUILD') {
+        const { code, name, address, func, rating, fire, acc } = req.body;
+        await conn.execute(
+          'UPDATE BUILDINGS SET NAME = ?, ADDRESS = ?, FUNC = ?, RATING = ?, FIRE_DATA = ?, ACCESSIBILITY = ? WHERE CODE = ?',
+          [name, address, func, rating, fire, acc, code]
+        );
+        res.status(200).json({ message: 'Building updated' });
+      } else if (action === 'POSTBUILD') {
+        const { name, address, func, rating, fire, acc } = req.body;
+        const [result] = await conn.execute(
+          'INSERT INTO BUILDINGS (NAME, ADDRESS, FUNC, RATING, FIRE_DATA, ACCESSIBILITY) VALUES (?, ?, ?, ?, ?, ?)',
+          [name, address, func, rating, fire, acc]
+        );
+        res.status(201).json({ message: 'Building added', id: result.insertId });
+      } else if (action === 'POSTREV') {
+        const { code, rating, comment } = req.body;
+        if (!rating) return res.status(400).json({ error: 'Cannot submit review' });
+        const [result] = await conn.execute(
+          'INSERT INTO REVIEWS (BUILDING_CODE, RATING, COMMENT) VALUES (?, ?, ?)',
+          [code, rating, comment]
+        );
+        res.status(201).json({ message: 'Review added', id: result.insertId });
+      } else {
+        res.status(400).json({ error: 'Unknown action' });
       }
-
-      const [result] = await conn.execute(
-        'INSERT INTO users (name, email) VALUES (?, ?)',
-        [name, email]
-      );
-
-      res.status(201).json({ message: 'User added', id: result.insertId });
-    } 
-    else {
+    } else {
       res.status(405).json({ error: 'Method not allowed' });
     }
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database error', details: err.message });

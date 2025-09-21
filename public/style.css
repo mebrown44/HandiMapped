@@ -104,5 +104,25 @@ input, select, textarea {
       border-radius: 8px;
       border: 1px solid #ddd;
 }
-
+.tabs {
+  display: flex;
+  margin-bottom: 15px;
+}
+.tab-button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+}
+.tab-button.active {
+  background: #004700;
+  color: white;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
 

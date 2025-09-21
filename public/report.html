@@ -32,33 +32,59 @@
   </nav>
 
   <div class="report-container">
-    <h2>Submit a Report</h2>
-    <form id="reportForm">
-      <label for="building">Building:</label>
-      <select id="building" required>
-        <option value="">-- Select a building --</option>
-        <option value="new">+ New Building</option>
-      </select>
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-button active" onclick="showTab('report')">Submit Report</button>
+      <button class="tab-button" onclick="showTab('new-building')">Add New Building</button>
+    </div>
 
-      <label for="stars">Rating (1–5):</label>
-      <select id="stars" required>
-        <option value="1">⭐ 1</option>
-        <option value="2">⭐ 2</option>
-        <option value="3">⭐ 3</option>
-        <option value="4">⭐ 4</option>
-        <option value="5">⭐ 5</option>
-      </select>
+    <!-- Report -->
+    <div id="reportForm" class="tab-content active">
+      <h2>Submit a Report</h2>
+      <form id="reportForm">
+        <label for="building">Building:</label>
+        <select id="building" required>
+          <option value="">-- Select a building --</option>
+          <option value="new">+ New Building</option>
+        </select>
 
-      <label for="review">Your Review:</label>
-      <textarea id="review" rows="4"></textarea>
+        <label for="stars">Rating (1–5):</label>
+        <select id="stars" required>
+          <option value="1">⭐ 1</option>
+          <option value="2">⭐ 2</option>
+          <option value="3">⭐ 3</option>
+          <option value="4">⭐ 4</option>
+          <option value="5">⭐ 5</option>
+        </select>
 
-      <label for="name">Your Name:</label>
-      <input type="text" id="name" placeholder="e.g., Amaya Papaya">
+        <label for="review">Your Review:</label>
+        <textarea id="review" rows="4"></textarea>
 
-      <button type="submit" onclick="submit()">Submit</button>
-    </form>
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" placeholder="e.g., Amaya Papaya">
 
-    <div id="output" class="review-output" style="display:none;"></div>
+        <button type="submit" onclick="submit()">Submit</button>
+      </form>
+
+      <div id="output" class="review-output" style="display:none;"></div>
+    </div>
+
+    <!-- New Building Form -->
+    <div id="new-building" class="tab-content">
+      <h2>Add a New Building</h2>
+      <form id="buildingForm">
+        <label for="newName">Building Name:</label>
+        <input type="text" id="newName" required>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" required>
+
+        <label for="function">Function (e.g., Academic / Library):</label>
+        <input type="text" id="function" required>
+
+        <button type="submit">Add Building</button>
+      </form>
+    </div>
   </div>
 
   <script>
@@ -108,7 +134,7 @@
         const name = document.getElementById("name").value || "Anonymous";
 
         if (building === "new") {
-          
+
         }
         // Works on both localhost and Vercel
         const res = fetch('https://handimapped.com/api/conn?action=POSTREV', {

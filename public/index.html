@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>HandiMapped – Home</title>
+   <link rel="icon" type="image/png" href="panther.png">
   <!--Leaflet CSS, not sure how it works-->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <!--I moved the style of more general elements to the style.css file-->
@@ -95,7 +96,7 @@
 
           L.marker([lat, lng], { icon: pawIcon })
             .addTo(map)
-            .bindPopup(`<b>${b.NAME}</b><br>⭐ ${rating}/5`);
+            .bindPopup(`<b>${b.NAME}</b><br>⭐ ${rating || '-'}/5`);
         });
 
         const list = document.getElementById("buildingList");

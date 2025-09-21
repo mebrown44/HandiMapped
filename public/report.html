@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Report</title>
+  <link rel="icon" type="image/png" href="panther.png">
   <link rel="stylesheet" href="style.css">
   <style>
     button {
@@ -149,7 +150,7 @@
 
     document.getElementById("buildingForm").addEventListener("submit", function(event) {
       try {
-        const name = document.getElementById("name").value;
+        const name = document.getElementById("newName").value;
         const address = document.getElementById("address").value;
         const func = document.getElementById("function").value;
         const fireData = document.getElementById("fire-data").value;

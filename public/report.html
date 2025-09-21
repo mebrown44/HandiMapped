@@ -143,6 +143,11 @@
         const buildings = await res.json();
         console.log("Buildings:", buildings);
 
+        const select = document.getElementById("building");
+
+        // Insert buildings before the "new" option
+        const newOption = select.querySelector('option[value="new"]');
+
         buildings.forEach(b => {
           const option = document.createElement("option");
           option.value = b.NAME;   // or b.CODE if you want numeric code

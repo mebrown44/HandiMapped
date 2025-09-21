@@ -58,16 +58,11 @@
     }).addTo(map);
     //panther marker
     var pawIcon = L.icon({
-      iconUrl: 'panther.png',   
+      iconUrl: '/panther.png',   
       iconSize: [30, 30],
       iconAnchor: [16, 32],
       popupAnchor: [0, -30]
     });
-    //add markers, coordinates are from the oakland map in only cans
-    /*L.marker([40.4442, -79.9532], {icon: pawIcon}).addTo(map)
-      .bindPopup("<b>Cathedral of Learning</b><br>⭐ 3.5/5");
-    L.marker([40.4429, -79.9540], {icon: pawIcon}).addTo(map)
-      .bindPopup("<b>Information Science Building</b><br>⭐ 2/5");*/
 
     //Dynamic insert based on SQL
     loadBuildings();

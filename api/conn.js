@@ -58,7 +58,7 @@ export default async function handler(req, res) {
         );
         //Updates building rating
         await pool.query(
-          'UPDATE BUILDINGS SET RATING = (SELECT IFNULL(AVG(RATING), 0) FROM REVIEWS WHERE BUILDING_CODE = (SELECT CODE FROM BUILDINGS WHERE NAME= ?)) WHERE CODE = (SELECT CODE FROM BUILDINGS WHERE NAME= ?)',
+          'UPDATE BUILDINGS SET RATING = (SELECT IFNULL(AVG(RATING), 0) FROM REVIEWS WHERE BUILDING_CODE = (SELECT CODE FROM BUILDINGS WHERE NAME= ?)) WHERE NAME = ?',
           [building, building]
         );
         return res.status(201).json({ message: 'Review added', id: result.insertId });

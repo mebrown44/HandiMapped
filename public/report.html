@@ -105,7 +105,7 @@
 
     document.getElementById("reportForm").addEventListener("submit", function(event) {
       try {
-        const building = document.getElementById("building").value;
+        const building = document.getElementById("building").innerText;
         const stars = document.getElementById("stars").value;
         const review = document.getElementById("review").value;
         const name = document.getElementById("name").value || "Anonymous";
@@ -121,7 +121,7 @@
           },
           body: JSON.stringify({ 
             building: building,
-            rating: parseInt(stars),
+            rating: parseDouble(stars),
             comment: review,
             name: name })
         });

@@ -154,7 +154,8 @@
     document.getElementById("reportForm").addEventListener("submit", async function(event) {
       event.preventDefault();
       try {
-        const building = document.getElementById("building").innerText;
+        const buildingSelect = document.getElementById("building");
+        const building = buildingSelect.options[buildingSelect.selectedIndex].text;
         const stars = document.getElementById("stars").value;
         const review = document.getElementById("review").value;
         const name = document.getElementById("name").value || "Anonymous";

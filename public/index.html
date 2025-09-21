@@ -27,71 +27,106 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
   <nav class="navbar">
-    <div class="navbar-content">
+      <div class="navbar-content">
       <ul class="menu">
         <li class="item"><a href="index.html">Home</a></li>
         <li class="item"><a href="report.html">Report</a></li>
         <li class="item"><a href="about.html">About Us</a></li>
       </ul>
-    </div>
-  </nav>
 
-  <!-- Map -->
-  <div id="map" style="height:500px;"></div>
-
-  <!-- Search + Building List -->
-  <div style="padding:20px; background:#5a8672; color:black;">
-    <input type="text" id="search" placeholder="Search buildings..." style="width:100%; padding:8px; margin-bottom:10px;">
-    
-    <!-- Building list -->
-    <ul id="building-list">
-      <li><a href="#" data-building="Cathedral of Learning">Cathedral of Learning</a></li>
-      <li><a href="#" data-building="Information Science Building">Information Science Building</a></li>
-    </ul>
-
-    <!-- Review output goes here -->
-    <div id="building-review" style="
-        margin-top:20px; 
-        padding:15px; 
-        background:#fff; 
-        border-radius:8px; 
-        border:1px solid #ccc;
-        display:none;">
-    </div>
-  </div>
-
-  <!-- Your existing Leaflet + marker scripts go here -->
+      <button type="submit">Search</button>
+      </div>
+    </nav>
+  <header>
+    <img src="https://i.postimg.cc/MZMpcqs3/handimapped-logo-test.png" width="300" height="63" alt="HandiMapped Logo"/>
+  </header>
+  <div id="map"></div>
+  <input type="text" id="searchBar" placeholder="Search buildings...">
+  <ul id="buildingList">
+    <li>Cathedral of Learning</li>
+    <li>Information Science Building</li>
+  </ul>
+  <!--Leaflet JS has to come after CSS-->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    // Function to get latest review for a building
+    //create map
+    var map = L.map('map').setView([40.4442, -79.9532], 16);
+    //add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    //panther marker
+    var pawIcon = L.icon({
+      iconUrl: 'panther.png',   
+      iconSize: [30, 30],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -30]
+    });
     function getReview(building) {
-      let saved = localStorage.getItem(building);
-      if (saved) {
-        let r = JSON.parse(saved);
-        return `
-          <h3>${building}</h3>
-          <p><b>Rating:</b> ${"⭐".repeat(r.stars)}</p>
-          <p><b>Review:</b> ${r.review}</p>
-          <p><b>By:</b> ${r.name}</p>
-          <p><b>Date:</b> ${r.date}</p>
-        `;
-      } else {
-        return `<h3>${building}</h3><p>No reviews yet.</p>`;
-      }
+    let saved = localStorage.getItem(building);
+    if (saved) {
+      let r = JSON.parse(saved);
+      return `
+        <b>${building}</b><br>
+        ⭐ ${"⭐".repeat(r.stars)}<br>
+        "${r.review}"<br>
+        – ${r.name}, ${r.date}
+      `;
+    } 
+    else {
+      return `<b>${building}</b><br>No reviews yet.`;
     }
+  }
 
-    // Click handler for building names
-    document.querySelectorAll("#building-list a").forEach(link => {
-      link.addEventListener("click", function(e) {
-        e.preventDefault();
-        const building = this.dataset.building;
-        const reviewBox = document.getElementById("building-review");
-        reviewBox.innerHTML = getReview(building);
-        reviewBox.style.display = "block";
+  // Markers
+  L.marker([40.4442, -79.9532], {icon: pawIcon}).addTo(map)
+    .bindPopup(getReview("Cathedral of Learning"));
+
+  L.marker([40.4429, -79.9540], {icon: pawIcon}).addTo(map)
+    .bindPopup(getReview("Information Science Building"));
+
+    //Dynamic insert based on SQL
+    loadBuildings();
+    //search filter
+    document.getElementById('searchBar').addEventListener('input', function () {
+      let filter = this.value.toLowerCase();
+      let items = document.querySelectorAll('#buildingList li');
+      items.forEach(li => {
+        //if it is included in the filter, no char after
+        li.style.display = li.textContent.toLowerCase().includes(filter) ? '' : 'none';
       });
     });
-  </script>
-</body>
+    
+    async function loadBuildings() {
+      try {
+        // Works on both localhost and Vercel
+        const res = await fetch('https://handimapped.com/api/conn?action=GETBUILD');
+        if (!res.ok) {
+          console.error('HTTP error', res.status);
+          return;
+        }
 
+        const buildings = await res.json();
+        console.log("Buildings:", buildings);
+
+        buildings.forEach(b => {
+          const lat = parseFloat(b.LAT);
+          const lng = parseFloat(b.LNG);
+          const rating = parseFloat(b.RATING).toFixed(1);
+
+          L.marker([lat, lng], { icon: pawIcon })
+            .addTo(map)
+            .bindPopup(`<b>${b.NAME}</b><br>⭐ ${rating}/5`);
+        });
+      } catch (err) {
+        console.error('Fetch failed', err);
+      }
+  }
+  
+  </script>
+  <footer>
+    <p>&copy; 2025 HandiMapped Team</p>
+  </footer>
+</body>
 </html>

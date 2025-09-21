@@ -95,9 +95,9 @@
     </div>
 
     <!-- Report -->
-    <div id="reportForm" class="tab-content active">
+    <div id="reportFormTab" class="tab-content active">
       <h2>Submit a Report</h2>
-      <form id="frmReportForm">
+      <form id="reportForm">
         <label for="building">Building:</label>
         <select id="building" required>
           <option value="">-- Select a building --</option>
@@ -216,7 +216,7 @@
         const lat = 0.0;
         const lng = 0.0;
         // Works on both localhost and Vercel
-        
+
         const res = await fetch('https://handimapped.com/api/conn?action=POSTBUILD', {
           method: 'POST',
           headers: {
@@ -245,7 +245,7 @@
         output.style.display = "block";
 
         let reviewData = { name, address, func, date: today };
-        localStorage.setItem(building, JSON.stringify(reviewData));
+        localStorage.setItem(name, JSON.stringify(reviewData));
         output.innerHTML = `
           <h3>Building Submitted</h3>
           <p><b>Name:</b> ${name}</p>

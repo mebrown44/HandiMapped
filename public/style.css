@@ -78,12 +78,13 @@ button:hover {
 footer {
       text-align: center;
       padding: 15px;
-      background: #eee;
+      background: #ee7674;
+      color: #7c0b2b;
       margin-top: 20px;
 }
 .report-container {
       max-width: 600px;
-      margin: 100px auto 40px;
+      margin: 40px auto 40px;
       background: #feefdd;
       padding: 40px;
       border-radius: 10px;

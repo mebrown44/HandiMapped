@@ -34,8 +34,8 @@
   <div class="report-container">
     <!-- Tabs -->
     <div class="tabs">
-      <button class="tab-button active" onclick="showTab('reportForm')">Submit Report</button>
-      <button class="tab-button" onclick="showTab('new-building')">Add New Building</button>
+      <button class="tab-button active" onclick="showTab(event, 'reportForm')">Submit Report</button>
+      <button class="tab-button" onclick="showTab(event, 'new-building')">Add New Building</button>
     </div>
 
     <!-- Report -->
@@ -230,7 +230,7 @@
       } catch (err) {
         console.error('Fetch failed', err);
       }
-    });
+    }); 
 
     async function loadBuildings() {
       try {
@@ -259,7 +259,7 @@
       }
     }
 
-    function showTab(tabId) {
+    function showTab(event, tabId) {
       // Hide all tab contents
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       // Remove "active" from all buttons

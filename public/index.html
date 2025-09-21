@@ -65,7 +65,7 @@
 
     //Dynamic insert based on SQL
     loadBuildings();
-    populateBuildingsList();
+    //populateBuildingsList();
     //search filter
     document.getElementById('searchBar').addEventListener('input', function () {
       let filter = this.value.toLowerCase();
@@ -97,6 +97,15 @@
             .addTo(map)
             .bindPopup(`<b>${b.NAME}</b><br>⭐ ${rating}/5`);
         });
+
+        const list = document.getElementById("buildingList");
+
+        buildings.forEach(b => {
+          const li = document.createElement("li");
+          li.textContent = b.NAME;   // show the building name
+          li.dataset.code = b.CODE;  // store the CODE as a data attribute if you need it later
+          list.appendChild(li);
+        });
       } catch (err) {
         console.error('Fetch failed', err);
       }
@@ -114,14 +123,7 @@
         const buildings = await res.json();
         console.log("Buildings:", buildings);
 
-        const list = document.getElementById("buildingList");
-
-        buildings.forEach(b => {
-          const li = document.createElement("li");
-          li.textContent = b.NAME;   // show the building name
-          li.dataset.code = b.CODE;  // store the CODE as a data attribute if you need it later
-          list.appendChild(li);
-        });
+        
       } catch (err) {
         console.error('Fetch failed', err);
       }

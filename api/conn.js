@@ -37,11 +37,11 @@ export default async function handler(req, res) {
       }
 
       if (action === 'POSTREV') {
-        const { code, rating, comment, name } = req.body;
+        const { building, rating, comment, name } = req.body;
         if (!rating) return res.status(400).json({ error: 'Cannot submit review' });
         const [result] = await pool.query(
-          'INSERT INTO REVIEWS (BUILDING_CODE, RATING, COMMENT, NAME) VALUES (?, ?, ?, ?)',
-          [code, rating, comment, name]
+          'INSERT INTO REVIEWS (BUILDING_CODE, RATING, COMMENT, NAME) VALUES ((SELECT CODE FROM BUILDINGS WHERE NAME= ?), ?, ?, ?)',
+          [building, rating, comment, name]
         );
         return res.status(201).json({ message: 'Review added', id: result.insertId });
       }

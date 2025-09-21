@@ -36,9 +36,8 @@
     <form id="reportForm">
       <label for="building">Building:</label>
       <select id="building" required>
-        <option value="Cathedral of Learning">Cathedral of Learning</option>
-        <option value="Information Science Building">Information Science Building</option>
-        <option value="new">New Building</option>
+        <option value="">-- Select a building --</option>
+        <option value="new">+ New Building</option>
       </select>
 
       <label for="stars">Rating (1–5):</label>
@@ -51,24 +50,26 @@
       </select>
 
       <label for="review">Your Review:</label>
-      <textarea id="review" rows="4" required></textarea>
+      <textarea id="review" rows="4"></textarea>
 
       <label for="name">Your Name:</label>
       <input type="text" id="name" placeholder="e.g., Amaya Papaya">
 
-      <button type="submit">Submit</button>
+      <button type="submit" onclick="submit()">Submit</button>
     </form>
 
     <div id="output" class="review-output" style="display:none;"></div>
   </div>
 
   <script>
+    loadBuildings();
+
     document.getElementById("reportForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
       const building = document.getElementById("building").value;
       const stars = document.getElementById("stars").value;
-      const review = document.getElementById("review").value;
+      const review = document.getElementById("review").value || "";
       const name = document.getElementById("name").value || "Anonymous";
 
       const today = new Date().toLocaleDateString();
@@ -96,7 +97,62 @@
       }
 
       document.getElementById("reportForm").reset();
+
     });
+
+    document.getElementById("reportForm").addEventListener("submit", function(event) {
+      try {
+        const building = document.getElementById("building").value;
+        const stars = document.getElementById("stars").value;
+        const review = document.getElementById("review").value;
+        const name = document.getElementById("name").value || "Anonymous";
+      // Works on both localhost and Vercel
+        const res = fetch('https://handimapped.com/api/conn?action=POSTREV', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 
+            building: building,
+            rating: parseInt(stars),
+            comment: review,
+            name: name })
+        });
+
+        const data = res.json();
+
+        if (!res.ok) {
+          console.error('HTTP error', res.status);
+          return;
+        }
+
+      } catch (err) {
+        console.error('Fetch failed', err);
+      }
+    });
+
+    async function loadBuildings() {
+      try {
+        // Works on both localhost and Vercel
+        const res = await fetch('https://handimapped.com/api/conn?action=GETBUILD');
+        if (!res.ok) {
+          console.error('HTTP error', res.status);
+          return;
+        }
+
+        const buildings = await res.json();
+        console.log("Buildings:", buildings);
+
+        buildings.forEach(b => {
+          const option = document.createElement("option");
+          option.value = b.NAME;   // or b.CODE if you want numeric code
+          option.textContent = b.NAME;
+          select.insertBefore(option, newOption);
+        });
+      } catch (err) {
+        console.error('Fetch failed', err);
+      }
+    }
   </script>
   <footer>
     <p>&copy; 2025 HandiMapped Team</p>

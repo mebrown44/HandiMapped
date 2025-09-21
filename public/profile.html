@@ -68,41 +68,6 @@
     </section>
   </div>
 
-  
-
-  <!--section class="Cathy">
-    <h2>Cathedral of Learning</h2>
-    <ul>
-      <li>Bad Wi-Fi connection in many areas.</li>
-      <li>No elevator access to the second floor.</li>
-      <li>Wood seating makes it uncomfortable for elders to sit.</li>
-      <li>Sharp corners on ramps make wheelchair access difficult.</li>
-      <li>Handicapped seats are in a tight corner all the way in back</li>
-    </ul>
-    <img src="elevator.png" alt="Elevator" class="review-img">
-    <img src="IMG_6040.png" alt="Placeholder" class="review-img">
-    <img src="cathy2.png" alt="Elevator" class="review-img">
-    <img src="cathy3.png" alt="Placeholder" class="review-img">
-    <img src="cathy4.png" alt="Placeholder" class="review-img">
-    <img src="cathy5.png" alt="Placeholder" class="review-img">
-    <img src="cathy6.png" alt="Placeholder" class="review-img">
-
-    <h2>Information Science</h2>
-    <ul>
-      <li>Wheelchair access ramp exists but is very narrow.</li>
-      <li>Ramp has three sharp uphill corners that make it hard for users.</li>
-      <li>Construction nearby makes it harder to access the building.</li>
-      <li>Staircase is narrow, elevators are small.</li>
-      <li>Have to go through 3 different doors to get to the women's restroom IN the stairwell.</li>
-    </ul>
-    <img src="sharpcorneris.png" alt="Sharp corner" class="review-img">
-    <img src="is1.png" alt="bello" class="review-img">
-    <img src="is2.png" alt="bello" class="review-img">
-    <img src="is3.png" alt="bello" class="review-img">
-    <img src="is4.png" alt="bello" class="review-img">
-    <img src="is5.png" alt="bello" class="review-img">
-  </section-->
-
   <footer>
     <p>&copy; 2025 HandiMapped Team</p>
   </footer>
@@ -127,7 +92,7 @@
           "cathy6.png"
         ]
       },
-      "Information Science": {
+      "Information Science Building": {
         description: [
           "Wheelchair access ramp exists but is very narrow.",
           "Ramp has three sharp uphill corners that make it hard for users.",
@@ -145,6 +110,7 @@
         ]
       }
     };
+    let currentSlide = 0;
 
     loadBuildings();
 
@@ -220,7 +186,7 @@
           `;
         }
 
-        let currentSlide = 0;
+        currentSlide = 0;
         details.innerHTML = html;
 
       } catch (err) {

@@ -34,7 +34,7 @@
   <div class="report-container">
     <!-- Tabs -->
     <div class="tabs">
-      <button class="tab-button active" onclick="showTab('report')">Submit Report</button>
+      <button class="tab-button active" onclick="showTab('reportForm')">Submit Report</button>
       <button class="tab-button" onclick="showTab('new-building')">Add New Building</button>
     </div>
 
@@ -63,7 +63,7 @@
         <label for="name">Your Name:</label>
         <input type="text" id="name" placeholder="e.g., Amaya Papaya">
 
-        <button type="submit" onclick="submit()">Submit</button>
+        <button id="add-review" type="submit">Submit</button>
       </form>
 
       <div id="output" class="review-output" style="display:none;"></div>
@@ -82,7 +82,13 @@
         <label for="function">Function (e.g., Academic / Library):</label>
         <input type="text" id="function" required>
 
-        <button type="submit">Add Building</button>
+        <label for="fire-data">Evacuation Information:</label>
+        <input type="text" id="fire-data">
+
+        <label for="accessibility">Accessibility Note:</label>
+        <input type="text" id="accessibility">
+
+        <button id="add-building" type="submit">Add Building</button>
       </form>
     </div>
   </div>
@@ -161,6 +167,71 @@
       }
     });
 
+    /*
+    <div id="new-building" class="tab-content">
+      <h2>Add a New Building</h2>
+      <form id="buildingForm">
+        <label for="newName">Building Name:</label>
+        <input type="text" id="newName" required>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" required>
+
+        <label for="function">Function (e.g., Academic / Library):</label>
+        <input type="text" id="function" required>
+
+        <label for="fire-data">Evacuation Information:</label>
+        <input type="text" id="fire-data">
+
+        <label for="accessibility">Accessibility Note:</label>
+        <input type="text" id="accessibility">
+
+        <button id="add-building" type="submit">Add Building</button>
+      </form>
+    </div>
+    */
+    document.getElementById("buildingForm").addEventListener("submit", function(event) {
+      try {
+        const name = document.getElementById("name").value;
+        const address = document.getElementById("address").value;
+        const func = document.getElementById("function").value;
+        const fireData = document.getElementById("fire-data").value;
+        const accessibility = document.getElementById("accessibility").value;
+
+        const lat = 0.0;
+        const lng = 0.0;
+
+        if (building === "new") {
+
+        }
+        // Works on both localhost and Vercel
+        const res = fetch('https://handimapped.com/api/conn?action=POSTBUILD', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 
+            name: name,
+            address: address,
+            func: func,
+            fire_data: fireData,
+            accessibility: accessibility,
+            lat: lat,
+            lng: lng})
+        });
+
+        const data = res.json();
+
+        if (!res.ok) {
+          console.error('HTTP error', res.status);
+          return;
+        }
+
+      } catch (err) {
+        console.error('Fetch failed', err);
+      }
+    });
+
     async function loadBuildings() {
       try {
         // Works on both localhost and Vercel
@@ -171,7 +242,6 @@
         }
 
         const buildings = await res.json();
-        console.log("Buildings:", buildings);
 
         const select = document.getElementById("building");
 
@@ -187,6 +257,17 @@
       } catch (err) {
         console.error('Fetch failed', err);
       }
+    }
+
+    function showTab(tabId) {
+      // Hide all tab contents
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      // Remove "active" from all buttons
+      document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+      // Show selected tab
+      document.getElementById(tabId).classList.add('active');
+      // Highlight the clicked button
+      event.target.classList.add('active');
     }
   </script>
   <footer>

@@ -18,20 +18,33 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
+
       if (action === 'UPDATEBUILD') {
-        const { code, name, address, func, rating, fire, acc, lat, lng } = req.body;
+        const { code, name, address, func, fire, acc } = req.body;
+        const coords = await geocoderAPI(address);
+        if (!coords) {
+          return res.status(400).json({ error: "Could not geocode address" });
+        }
+        const { lat, lng } = coords;
+
         await pool.query(
-          'UPDATE BUILDINGS SET NAME = ?, ADDRESS = ?, FUNC = ?, RATING = ?, FIRE_DATA = ?, ACCESSIBILITY = ?, LAT = ?, LNG = ? WHERE CODE = ?',
-          [name, address, func, rating, fire, acc, lat, lng, code]
+          'UPDATE BUILDINGS SET NAME = ?, ADDRESS = ?, FUNC = ?, RATING = (SELECT IFNULL(AVG(RATING), 0) FROM REVIEWS WHERE BUILDING_CODE = ?), FIRE_DATA = ?, ACCESSIBILITY = ?, LAT = ?, LNG = ? WHERE CODE = ?',
+          [name, address, func, code, fire, acc, lat, lng, code]
         );
         return res.status(200).json({ message: 'Building updated' });
       }
 
       if (action === 'POSTBUILD') {
-        const { name, address, func, rating, fire, acc, lat, lng } = req.body;
+        const { name, address, func, fire, acc } = req.body;
+        const coords = await geocoderAPI(address);
+        if (!coords) {
+          return res.status(400).json({ error: "Could not geocode address" });
+        }
+        const { lat, lng } = coords;
+
         const [result] = await pool.query(
           'INSERT INTO BUILDINGS (NAME, ADDRESS, FUNC, RATING, FIRE_DATA, ACCESSIBILITY, LAT, LNG) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-          [name, address, func, rating, fire, acc, lat, lng]
+          [name, address, func, null, fire, acc, lat, lng]
         );
         return res.status(201).json({ message: 'Building added', id: result.insertId });
       }
@@ -43,6 +56,11 @@ export default async function handler(req, res) {
           'INSERT INTO REVIEWS (BUILDING_CODE, RATING, COMMENT, NAME) VALUES ((SELECT CODE FROM BUILDINGS WHERE NAME= ?), ?, ?, ?)',
           [building, rating, comment, name]
         );
+        //Updates building rating
+        await pool.query(
+          'UPDATE BUILDINGS SET RATING = (SELECT IFNULL(AVG(RATING), 0) FROM REVIEWS WHERE BUILDING_CODE = (SELECT CODE FROM BUILDINGS WHERE NAME= ?)) WHERE CODE = (SELECT CODE FROM BUILDINGS WHERE NAME= ?)',
+          [building, building]
+        );
         return res.status(201).json({ message: 'Review added', id: result.insertId });
       }
 
@@ -53,5 +71,26 @@ export default async function handler(req, res) {
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: 'Database error', details: err.message });
+  }
+}
+
+async function geocoderAPI(address){
+  var href=encodeURIComponent(address);
+
+  try {
+    const response = await fetch(
+      `https://api.geoapify.com/v1/geocode/search?text=${href}&apiKey=bc2fd3091eff4ed0ba0fa289231e4f3c`
+    );
+    const result = await response.json();
+
+    if (result.features && result.features.length > 0) {
+      const [lng, lat] = result.features[0].geometry.coordinates;
+      return { lat, lng };
+    } else {
+      throw new Error("No results found");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
   }
 }

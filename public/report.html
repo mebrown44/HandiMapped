@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Report</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    button {
+      margin-top: 15px;
+      background: #004700;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #006600;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-content">
+      <ul class="menu">
+        <li class="item"><a href="index.html">Home</a></li>
+        <li class="item"><a href="report.html">Report</a></li>
+        <li class="item"><a href="about.html">About Us</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="report-container">
+    <h2>Submit a Report</h2>
+    <form id="reportForm">
+      <label for="building">Building:</label>
+      <select id="building" required>
+        <option value="Cathedral of Learning">Cathedral of Learning</option>
+        <option value="Information Science Building">Information Science Building</option>
+        <option value="new">New Building</option>
+      </select>
+
+      <label for="stars">Rating (1–5):</label>
+      <select id="stars" required>
+        <option value="1">⭐ 1</option>
+        <option value="2">⭐ 2</option>
+        <option value="3">⭐ 3</option>
+        <option value="4">⭐ 4</option>
+        <option value="5">⭐ 5</option>
+      </select>
+
+      <label for="review">Your Review:</label>
+      <textarea id="review" rows="4" required></textarea>
+
+      <label for="name">Your Name:</label>
+      <input type="text" id="name" placeholder="e.g., Amaya Papaya">
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <div id="output" class="review-output" style="display:none;"></div>
+  </div>
+
+  <script>
+    document.getElementById("reportForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const building = document.getElementById("building").value;
+      const stars = document.getElementById("stars").value;
+      const review = document.getElementById("review").value;
+      const name = document.getElementById("name").value || "Anonymous";
+
+      const today = new Date().toLocaleDateString();
+
+      let output = document.getElementById("output");
+      output.style.display = "block";
+
+      if (building === "new") {
+        output.innerHTML = `
+          <h3>New Building Submission</h3>
+          <p><b>Status:</b> Processing new building...</p>
+          <p><b>Date:</b> ${today}</p>
+        `;
+      } else {
+        let reviewData = { building, stars, review, name, date: today };
+      localStorage.setItem(building, JSON.stringify(reviewData));
+        output.innerHTML = `
+          <h3>Review Submitted</h3>
+          <p><b>Building:</b> ${building}</p>
+          <p><b>Rating:</b> ${"⭐".repeat(stars)}</p>
+          <p><b>Review:</b> ${review}</p>
+          <p><b>Submitted by:</b> ${name}</p>
+          <p><b>Date:</b> ${today}</p>
+        `;
+      }
+
+      document.getElementById("reportForm").reset();
+    });
+  </script>
+  <footer>
+    <p>&copy; 2025 HandiMapped Team</p>
+  </footer>
+</body>
+</html>

@@ -97,7 +97,7 @@
     <!-- Report -->
     <div id="reportForm" class="tab-content active">
       <h2>Submit a Report</h2>
-      <form id="reportForm">
+      <form id="frmReportForm">
         <label for="building">Building:</label>
         <select id="building" required>
           <option value="">-- Select a building --</option>
@@ -151,7 +151,7 @@
   <script>
     loadBuildings();
 
-    document.getElementById("reportForm").addEventListener("submit", function(event) {
+    document.getElementById("reportForm").addEventListener("submit", async function(event) {
       event.preventDefault();
       try {
         const building = document.getElementById("building").innerText;
@@ -163,7 +163,7 @@
 
         }
         // Works on both localhost and Vercel
-        const res = fetch('https://handimapped.com/api/conn?action=POSTREV', {
+        const res = await fetch('https://handimapped.com/api/conn?action=POSTREV', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -175,7 +175,7 @@
             name: name })
         });
 
-        const data = res.json();
+        const data = await res.json();
 
         if (!res.ok) {
           console.error('HTTP error', res.status);
@@ -204,7 +204,7 @@
 
     });
 
-    document.getElementById("buildingForm").addEventListener("submit", function(event) {
+    document.getElementById("buildingForm").addEventListener("submit", async function(event) {
       event.preventDefault();
       try {
         const name = document.getElementById("newName").value;
@@ -215,12 +215,9 @@
 
         const lat = 0.0;
         const lng = 0.0;
-
-        if (building === "new") {
-
-        }
         // Works on both localhost and Vercel
-        const res = fetch('https://handimapped.com/api/conn?action=POSTBUILD', {
+        
+        const res = await fetch('https://handimapped.com/api/conn?action=POSTBUILD', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -235,7 +232,7 @@
             lng: lng})
         });
 
-        const data = res.json();
+        const data = await res.json();
 
         if (!res.ok) {
           console.error('HTTP error', res.status);

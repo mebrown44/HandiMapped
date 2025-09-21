@@ -63,26 +63,27 @@
   </div>
 
   <script>
+    //there is a button function i just forgot it and looked this up
     document.getElementById("reportForm").addEventListener("submit", function(e) {
       e.preventDefault();
-
+        //const is a variable (short for constant)
       const building = document.getElementById("building").value;
       const stars = document.getElementById("stars").value;
       const review = document.getElementById("review").value;
       const name = document.getElementById("name").value || "Anonymous";
-
       const today = new Date().toLocaleDateString();
-
       let output = document.getElementById("output");
       output.style.display = "block";
-
+      //if user picked new building report
       if (building === "new") {
         output.innerHTML = `
           <h3>New Building Submission</h3>
           <p><b>Status:</b> Processing new building...</p>
           <p><b>Date:</b> ${today}</p>
         `;
-      } else {
+      } 
+      else {
+        //if user picked cathy or infosci building
         let reviewData = { building, stars, review, name, date: today };
       localStorage.setItem(building, JSON.stringify(reviewData));
         output.innerHTML = `
@@ -94,7 +95,7 @@
           <p><b>Date:</b> ${today}</p>
         `;
       }
-
+      //resetting the form for a new report
       document.getElementById("reportForm").reset();
     });
   </script>

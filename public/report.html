@@ -110,6 +110,8 @@
           <p><b>Date:</b> ${today}</p>
         `;
       } else {
+        let reviewData = { building, stars, review, name, date: today };
+      localStorage.setItem(building, JSON.stringify(reviewData));
         output.innerHTML = `
           <h3>Review Submitted</h3>
           <p><b>Building:</b> ${building}</p>

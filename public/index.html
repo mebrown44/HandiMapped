@@ -63,11 +63,28 @@
       iconAnchor: [16, 32],
       popupAnchor: [0, -30]
     });
-    //add markers, coordinates are from the oakland map in only cans
-    /*L.marker([40.4442, -79.9532], {icon: pawIcon}).addTo(map)
-      .bindPopup("<b>Cathedral of Learning</b><br>⭐ 3.5/5");
-    L.marker([40.4429, -79.9540], {icon: pawIcon}).addTo(map)
-      .bindPopup("<b>Information Science Building</b><br>⭐ 2/5");*/
+    function getReview(building) {
+    let saved = localStorage.getItem(building);
+    if (saved) {
+      let r = JSON.parse(saved);
+      return `
+        <b>${building}</b><br>
+        ⭐ ${"⭐".repeat(r.stars)}<br>
+        "${r.review}"<br>
+        – ${r.name}, ${r.date}
+      `;
+    } 
+    else {
+      return `<b>${building}</b><br>No reviews yet.`;
+    }
+  }
+
+  // Markers
+  L.marker([40.4442, -79.9532], {icon: pawIcon}).addTo(map)
+    .bindPopup(getReview("Cathedral of Learning"));
+
+  L.marker([40.4429, -79.9540], {icon: pawIcon}).addTo(map)
+    .bindPopup(getReview("Information Science Building"));
 
     //Dynamic insert based on SQL
     loadBuildings();

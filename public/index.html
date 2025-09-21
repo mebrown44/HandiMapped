@@ -45,8 +45,6 @@
   <div id="map"></div>
   <input type="text" id="searchBar" placeholder="Search buildings...">
   <ul id="buildingList"> <!--ul means unordered list-->
-    <li>Cathedral of Learning</li><!--li means ordered list-->
-    <li>Information Science Building</li>
   </ul>
   <!--Leaflet JS has to come after CSS-->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -67,6 +65,7 @@
 
     //Dynamic insert based on SQL
     loadBuildings();
+    populateBuildingsList();
     //search filter
     document.getElementById('searchBar').addEventListener('input', function () {
       let filter = this.value.toLowerCase();

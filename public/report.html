@@ -6,7 +6,7 @@
   <link rel="icon" type="image/png" href="panther.png">
   <link rel="stylesheet" href="style.css">
   <style>
-    button {
+    .tab-button {
       margin-top: 15px;
       background: #004700;
       color: white;
@@ -15,22 +15,29 @@
       border-radius: 6px;
       cursor: pointer;
     }
-    button:hover {
+    .tab-button:hover {
       background: #006600;
     }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="navbar-content">
+  <header>
+    <!--img src="nub.png" height="50" alt="HandiMapped Logo" justify-content="flex-start"/ I'm giving up - margo-->
+    <h1>Report</h1>
+    <nav class="navbar">
+      <div class="navbar-content">
       <ul class="menu">
         <li class="item"><a href="index.html">Home</a></li>
-        <li class="item"><a href="report.html">Report</a></li>
+        <li class="item"><a href="profile.html">Profile</a></li>
         <li class="item"><a href="about.html">About Us</a></li>
       </ul>
-    </div>
-  </nav>
+      
+      <a href="https://steelhacks.org/" target="_blank">
+        <button>SteelHacks XII</button>
+      </a>
+      </div>
+    </nav>
+  </header>
 
   <div class="report-container">
     <!-- Tabs -->
@@ -63,7 +70,7 @@
         <label for="name">Your Name:</label>
         <input type="text" id="name" placeholder="e.g., Amaya Papaya">
 
-        <button id="add-review" type="submit">Submit</button>
+        <button class="tab-button" id="add-review" type="submit">Submit</button>
       </form>
 
       <div id="output" class="review-output" style="display:none;"></div>
@@ -88,7 +95,7 @@
         <label for="accessibility">Accessibility Note:</label>
         <input type="text" id="accessibility">
 
-        <button id="add-building" type="submit">Add Building</button>
+        <button class="tab-button" id="add-building" type="submit">Add Building</button>
       </form>
     </div>
   </div>

@@ -38,12 +38,6 @@
       border-radius: 6px;
       margin: 10px 0;
     }
-    footer {
-      text-align: center;
-      padding: 15px;
-      background: #eee;
-      margin-top: 20px;
-    }
   </style>
 </head>
 <body>
@@ -64,7 +58,19 @@
     </nav>
   </header>
 
-  <section class="Cathy">
+  <div class="report-container">
+    <select id="building" onchange="populateData()" required>
+    <option value="">-- Select a building --</option>
+    </select>
+
+    <section id="building-details">
+      <h2>Select a building to see details</h2>
+    </section>
+  </div>
+
+  
+
+  <!--section class="Cathy">
     <h2>Cathedral of Learning</h2>
     <ul>
       <li>Bad Wi-Fi connection in many areas.</li>
@@ -95,11 +101,144 @@
     <img src="is3.png" alt="bello" class="review-img">
     <img src="is4.png" alt="bello" class="review-img">
     <img src="is5.png" alt="bello" class="review-img">
-  </section>
+  </section-->
 
   <footer>
     <p>&copy; 2025 HandiMapped Team</p>
   </footer>
+
+  <script>
+    const buildingExtras = {
+      "Cathedral of Learning": {
+        description: [
+          "Bad Wi-Fi connection in many areas.",
+          "No elevator access to the second floor.",
+          "Wood seating makes it uncomfortable for elders to sit.",
+          "Sharp corners on ramps make wheelchair access difficult.",
+          "Handicapped seats are in a tight corner all the way in back."
+        ],
+        images: [
+          "elevator.png",
+          "IMG_6040.png",
+          "cathy2.png",
+          "cathy3.png",
+          "cathy4.png",
+          "cathy5.png",
+          "cathy6.png"
+        ]
+      },
+      "Information Science": {
+        description: [
+          "Wheelchair access ramp exists but is very narrow.",
+          "Ramp has three sharp uphill corners that make it hard for users.",
+          "Construction nearby makes it harder to access the building.",
+          "Staircase is narrow, elevators are small.",
+          "Have to go through 3 different doors to get to the women's restroom in the stairwell."
+        ],
+        images: [
+          "sharpcorneris.png",
+          "is1.png",
+          "is2.png",
+          "is3.png",
+          "is4.png",
+          "is5.png"
+        ]
+      }
+    };
+
+    loadBuildings();
+
+    async function loadBuildings() {
+      try {
+        // Works on both localhost and Vercel
+        const res = await fetch('https://handimapped.com/api/conn?action=GETBUILD');
+        if (!res.ok) {
+          console.error('HTTP error', res.status);
+          return;
+        }
+
+        const buildings = await res.json();
+
+        const select = document.getElementById("building");
+
+        buildings.forEach(b => {
+          const option = document.createElement("option");
+          option.value = b.NAME;   // or b.CODE if you want numeric code
+          option.textContent = b.NAME;
+          select.appendChild(option);
+        });
+      } catch (err) {
+        console.error('Fetch failed', err);
+      }
+    }
+
+    async function populateData() {
+      try {
+        const res = await fetch('https://handimapped.com/api/conn?action=GETBUILD');
+        if (!res.ok) {
+          console.error('HTTP error', res.status);
+          return;
+        }
+
+        const buildings = await res.json();
+        const select = document.getElementById("building");
+        const chosen = select.value;
+
+        const building = buildings.find(b => b.NAME === chosen);
+        if (!building) return;
+
+        const details = document.getElementById("building-details");
+        let html = `
+          <h2>${building.NAME}</h2>
+          <ul>
+            <li><b>Address:</b> ${building.ADDRESS || 'N/A'}</li>
+            <li><b>Rating:</b> ${building.RATING ? "⭐".repeat(Math.round(building.RATING)) : 'No ratings yet'}</li>
+            <li><b>Accessibility:</b> ${building.ACCESSIBILITY || 'N/A'}</li>
+            <li><b>Fire Data:</b> ${building.FIRE_DATA || 'N/A'}</li>
+          </ul>
+        `;
+
+        // Add extra data if available
+        const extra = buildingExtras[building.NAME];
+        if (extra) {
+          // description list
+          html += "<h3>Description</h3><ul>";
+          extra.description.forEach(d => {
+            html += `<li>${d}</li>`;
+          });
+          html += "</ul>";
+
+          // slider
+          html += `
+            <div class="slider" id="slider">
+              ${extra.images.map((img, i) => 
+                `<img src="${img}" class="${i === 0 ? 'active' : ''}" alt="${building.NAME} image">`
+              ).join("")}
+              <button class="prev" onclick="prevSlide()">❮</button>
+              <button class="next" onclick="nextSlide()">❯</button>
+            </div>
+          `;
+        }
+
+        let currentSlide = 0;
+        details.innerHTML = html;
+
+      } catch (err) {
+        console.error('Fetch failed', err);
+      }
+    }
+
+    function showSlide(n) {
+      const slides = document.querySelectorAll("#slider img");
+      if (!slides.length) return;
+      currentSlide = (n + slides.length) % slides.length;
+      slides.forEach((img, i) => {
+        img.classList.toggle("active", i === currentSlide);
+      });
+    }
+    function prevSlide() { showSlide(currentSlide - 1); }
+    function nextSlide() { showSlide(currentSlide + 1); }
+  </script>
 </body>
 </html>
 

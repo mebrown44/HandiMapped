@@ -45,7 +45,6 @@
         <label for="building">Building:</label>
         <select id="building" required>
           <option value="">-- Select a building --</option>
-          <option value="new">+ New Building</option>
         </select>
 
         <label for="stars">Rating (1–5):</label>
@@ -96,42 +95,6 @@
   <script>
     loadBuildings();
 
-    document.getElementById("reportForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const building = document.getElementById("building").value;
-      const stars = document.getElementById("stars").value;
-      const review = document.getElementById("review").value || "";
-      const name = document.getElementById("name").value || "Anonymous";
-
-      const today = new Date().toLocaleDateString();
-
-      let output = document.getElementById("output");
-      output.style.display = "block";
-
-      if (building === "new") {
-        output.innerHTML = `
-          <h3>New Building Submission</h3>
-          <p><b>Status:</b> Processing new building...</p>
-          <p><b>Date:</b> ${today}</p>
-        `;
-      } else {
-        let reviewData = { building, stars, review, name, date: today };
-      localStorage.setItem(building, JSON.stringify(reviewData));
-        output.innerHTML = `
-          <h3>Review Submitted</h3>
-          <p><b>Building:</b> ${building}</p>
-          <p><b>Rating:</b> ${"⭐".repeat(stars)}</p>
-          <p><b>Review:</b> ${review}</p>
-          <p><b>Submitted by:</b> ${name}</p>
-          <p><b>Date:</b> ${today}</p>
-        `;
-      }
-
-      document.getElementById("reportForm").reset();
-
-    });
-
     document.getElementById("reportForm").addEventListener("submit", function(event) {
       try {
         const building = document.getElementById("building").value;
@@ -162,34 +125,28 @@
           return;
         }
 
+        const today = new Date().toLocaleDateString();
+
+        let output = document.getElementById("output");
+        output.style.display = "block";
+
+        let reviewData = { building, stars, review, name, date: today };
+        localStorage.setItem(building, JSON.stringify(reviewData));
+        output.innerHTML = `
+          <h3>Review Submitted</h3>
+          <p><b>Building:</b> ${building}</p>
+          <p><b>Rating:</b> ${"⭐".repeat(stars)}</p>
+          <p><b>Review:</b> ${review}</p>
+          <p><b>Submitted by:</b> ${name}</p>
+          <p><b>Date:</b> ${today}</p>
+        `;
+
       } catch (err) {
         console.error('Fetch failed', err);
       }
+
     });
 
-    /*
-    <div id="new-building" class="tab-content">
-      <h2>Add a New Building</h2>
-      <form id="buildingForm">
-        <label for="newName">Building Name:</label>
-        <input type="text" id="newName" required>
-
-        <label for="address">Address:</label>
-        <input type="text" id="address" required>
-
-        <label for="function">Function (e.g., Academic / Library):</label>
-        <input type="text" id="function" required>
-
-        <label for="fire-data">Evacuation Information:</label>
-        <input type="text" id="fire-data">
-
-        <label for="accessibility">Accessibility Note:</label>
-        <input type="text" id="accessibility">
-
-        <button id="add-building" type="submit">Add Building</button>
-      </form>
-    </div>
-    */
     document.getElementById("buildingForm").addEventListener("submit", function(event) {
       try {
         const name = document.getElementById("name").value;
@@ -227,9 +184,25 @@
           return;
         }
 
+        const today = new Date().toLocaleDateString();
+
+        let output = document.getElementById("output");
+        output.style.display = "block";
+
+        let reviewData = { name, address, func, date: today };
+        localStorage.setItem(building, JSON.stringify(reviewData));
+        output.innerHTML = `
+          <h3>Building Submitted</h3>
+          <p><b>Name:</b> ${name}</p>
+          <p><b>Address:</b> ${address}</p>
+          <p><b>Function:</b> ${func}</p>
+          <p><b>Date:</b> ${today}</p>
+        `;
+
       } catch (err) {
         console.error('Fetch failed', err);
       }
+
     }); 
 
     async function loadBuildings() {
@@ -245,14 +218,11 @@
 
         const select = document.getElementById("building");
 
-        // Insert buildings before the "new" option
-        const newOption = select.querySelector('option[value="new"]');
-
         buildings.forEach(b => {
           const option = document.createElement("option");
           option.value = b.NAME;   // or b.CODE if you want numeric code
           option.textContent = b.NAME;
-          select.insertBefore(option, newOption);
+          select.appendChild(option);
         });
       } catch (err) {
         console.error('Fetch failed', err);
